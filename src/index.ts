@@ -3,6 +3,7 @@ import { HookDefinition } from "@transia/xrpl/dist/npm/models/ledger";
 import wabt from "wabt";
 
 const client = new Client("wss://xahau.org");
+import fs from 'fs'
 
 const getHookCodeFromHookHash = async (hookhash: string) => {
   await client.connect();
@@ -26,13 +27,14 @@ const wasmToWast = async (wasmBinary: Buffer) => {
 };
 
 const main = async () => {
-  const code = await getHookCodeFromHookHash("C820233A5F9D204907EAF43E6CD57D6D60DAA7DAFE3D2F8741CFAE9D873DA910");
+  const code = await getHookCodeFromHookHash("610F33B8EBF7EC795F822A454FB852156AEFE50BE0CB8326338A81CD74801864");
 
   const buffer = Buffer.from(code, "hex");
 
   const wast = await wasmToWast(buffer);
 
   console.log(wast);
+  fs.writeFileSync("out.wat", wast);
 };
 
 main();
